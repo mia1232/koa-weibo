@@ -5,7 +5,18 @@ router.prefix('/users');
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
-    title: 'Hello Koa 2!'
+    title: 'Hello Koa 2!',
+    isMe: true,
+    blogList: [{
+      id:1,
+      title: "blog"
+    }, {
+      id:2,
+      title: "blog2"
+    },{
+      id:3,
+      title: "blog3"
+    }]
   })
 })
 
