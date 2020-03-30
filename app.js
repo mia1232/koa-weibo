@@ -9,6 +9,8 @@ const logger = require('koa-logger')
 const index = require('./routes/index')
 const userViewRouter = require('./routes/view/user');
 const users = require('./routes/users')
+const userAPIRouter = require('./routes/api/user');
+const errorViewRouter = require('./routes/view/error');
 
 // error handler
 onerror(app)
@@ -34,9 +36,11 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-app.use(index.routes(), index.allowedMethods())
-app.use(userViewRouter.routes(), userViewRouter.allowedMethods())
+app.use(index.routes(), index.allowedMethods());
+app.use(userViewRouter.routes(), userViewRouter.allowedMethods());
+app.use(userAPIRouter.routes(), userAPIRouter.allowedMethods());
 app.use(users.routes(), users.allowedMethods())
+
 
 // error-handling
 app.on('error', (err, ctx) => {
