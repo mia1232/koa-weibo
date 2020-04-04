@@ -1,5 +1,7 @@
-const { getUserInfo } = require('../services/user');
+const { getUserInfo, createUser } = require('../services/user');
 const { SuccessModel, ErrorModel } = require('../model/ResModel')
+const { registerUserNameExistInfo, registerFailInfo } = require('../model/ErrorInfo');
+const { doCrypto } = require('../utils/cryp');
 async function isExist(userName) {
     const userInfo = await getUserInfo(userName);
     console.log(JSON.stringify(userInfo));
@@ -12,10 +14,21 @@ async function isExist(userName) {
             message: '用户名不存在'
         })
     }  
+}
 
+async function register({userName, password, gender}) {
+    const userInfo = await getUserInfo(userName);
+
+    if(userInfo) {
+        return ErrorModel(registerUserNameExistInfo);
+    }
+
+    await createUser({userName, password:doCrypto(password), gender});
+    return new SuccessModel();
 }
 
 
 module.exports = {
-    isExist
+    isExist,
+    register
 }

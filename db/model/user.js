@@ -9,7 +9,7 @@ const User = seq.define('user', {
         //用户名必须唯一
 
     },
-    userName: {
+    password: {
         type: STRING,
         allowNull: false
     },

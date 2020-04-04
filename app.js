@@ -12,6 +12,8 @@ const users = require('./routes/users')
 const userAPIRouter = require('./routes/api/user');
 const errorViewRouter = require('./routes/view/error');
 
+const { SESSION_SECRET_KEY } = require('./conf/constant');
+
 // error handler
 onerror(app)
 
