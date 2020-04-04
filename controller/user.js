@@ -16,6 +16,23 @@ async function isExist(userName) {
     }  
 }
 
+
+async function login(ctx, userName, password) {
+     //denglu chenggong session  yonghuxingxi
+    const userInfo = await getUserInfo(userName, doCrypto(password));
+    if(!userInfo) {
+        return new ErrorModel({
+            errorNum: 10004,
+            message: '登录失败'
+        })
+    }
+
+    if(ctx.session.userInfo == null){
+        ctx.session.userInfo = userInfo
+    }
+    return new SuccessModel()
+}
+
 async function register({userName, password, gender}) {
     const userInfo = await getUserInfo(userName);
 
@@ -30,5 +47,6 @@ async function register({userName, password, gender}) {
 
 module.exports = {
     isExist,
-    register
+    register,
+    login
 }

@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 
 
-router.prefix('/users');
+router.prefix('/');
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -25,8 +25,14 @@ router.get('/string', async (ctx, next) => {
 })
 
 router.get('/json', async (ctx, next) => {
+  const session = ctx.session
+  if (session.viewNum == null) {
+    session.viewNum = 0
+  }
+  session.viewNum++
   ctx.body = {
-    title: 'koa2 json'
+    title: 'koa2 json',
+    viewNum: session.viewNum
   }
 })
 
@@ -48,13 +54,13 @@ router.get('/loadMore/:userName/:pageIndex', async (ctx, next) => {
   }
 })
 
-router.post('/login', async (ctx, next) => {
-  const { userName, password } = ctx.request.body;
-  ctx.body = {
-    tag: 101,
-    userName,
-    password
-  }
-})
+// router.post('/login', async (ctx, next) => {
+//   const { userName, password } = ctx.request.body;
+//   ctx.body = {
+//     tag: 101,
+//     userName,
+//     password
+//   }
+// })
 
 module.exports = router

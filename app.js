@@ -6,6 +6,9 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
+const session = require('koa-generic-session')
+const redisStore = require('koa-redis')
+const { REDIS_CONF } = require('./conf/db')
 const index = require('./routes/index')
 const userViewRouter = require('./routes/view/user');
 const users = require('./routes/users')
@@ -16,6 +19,19 @@ const { SESSION_SECRET_KEY } = require('./conf/constant');
 
 // error handler
 onerror(app)
+app.keys = ['UIsdf_7878#$']
+app.use(session({
+  key: 'weibo.sid', // cookie name 默认是 `koa.sid`
+  prefix: 'weibo:sess:', // redis key 的前缀，默认是 `koa:sess:`
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000  // 单位 ms
+  },
+  store: redisStore({
+    all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
+  })
+}))
 
 // middlewares
 app.use(bodyparser({

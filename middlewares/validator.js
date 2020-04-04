@@ -1,9 +1,9 @@
 const { ErrorModel } = require('../model/ResModel');
 
-function genValidator(validator) {
+function genValidator(validatorFn) {
     async function validator(ctx, next) {
         const data = ctx.request.body;
-        const error = validator(data);
+        const error = validatorFn(data);
         if(error) {
             ctx.body = new ErrorModel({
                 errorNum: 10009,
